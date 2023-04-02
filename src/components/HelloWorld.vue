@@ -3,7 +3,12 @@
     <div class="flex justify-center">
         <button @click=" handle_connect()">Connect wallet</button>
     </div>
-    <div v-if="result">Result: {{ result.selectedAddress }}</div>
+    <div class="flex justify-center">
+        <div v-if="result">Result: {{ result.selectedAddress }}</div>
+    </div>
+    <div class="flex justify-center">
+        <button @click=" try_lama()">Escape wallet</button>
+    </div>
 </template>
 
 <script lang="ts">
@@ -19,8 +24,15 @@
         methods: {
             async handle_connect() {
                 this.result = await connect();
-                console.log(this.result.starknet);
-            }
+            },
+            async try_lama() {
+                await this.result.account.execute(
+                    {
+                        contractAddress: this.result.selectedAddress,
+                        entrypoint: 'triggerEscapeGuardian'
+                    });
+                    
+            },
         }
     }
 
