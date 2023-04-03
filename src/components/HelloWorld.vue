@@ -11,31 +11,25 @@
     </div>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
     import { connect } from "get-starknet"
+    import { ref } from 'vue'
 
+    let result = ref(null);
 
-    export default {
-        data() {
-            return {
-                result: null
-            }
-        },
-        methods: {
-            async handle_connect() {
-                this.result = await connect();
-            },
-            async try_lama() {
-                await this.result.account.execute(
-                    {
-                        contractAddress: this.result.selectedAddress,
-                        entrypoint: 'triggerEscapeGuardian'
-                    });
-                    
-            },
-        }
+    async function handle_connect() {
+        this.result = await connect();
+        console.log(this.result)
     }
 
+    // Check if there is no guardian ==> Free
+
+    async function try_lama() {
+        await this.result.account.execute({
+            contractAddress: this.result.selectedAddress,
+            entrypoint: 'triggerEscapeGuardian'
+        });   
+    }
 
 </script>
 
