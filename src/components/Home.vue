@@ -56,6 +56,7 @@
     let new_guardian = ref(null);
 
     async function handle_connect() {
+        // TODO get rid of get-starknet and only connect w/ argent
         result.value = await connect();
         get_guardian();
         get_escape();
