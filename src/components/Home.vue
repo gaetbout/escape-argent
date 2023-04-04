@@ -108,6 +108,7 @@
         });   
     }
     async function handle_remove_guardian() {
+        // TODO ask for confirmation and say it is very risky
         await this.result.account.execute({
             contractAddress: this.result.selectedAddress,
             entrypoint: 'escapeGuardian',
