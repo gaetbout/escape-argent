@@ -44,9 +44,9 @@
 </template>
 
 <script setup lang="ts">
-    import { connect, } from "get-starknet"
     import { ref } from 'vue'
     import { number } from 'starknet'
+    import sn from 'get-starknet-core'
 
 
     let result = ref(null);
@@ -56,10 +56,18 @@
     let new_guardian = ref(null);
 
     async function handle_connect() {
-        // TODO get rid of get-starknet and only connect w/ argent
-        result.value = await connect();
-        get_guardian();
-        get_escape();
+        const argent = (await sn.getAvailableWallets()).find(wallet => wallet.id === "argentX"  );
+        if (argent) {
+            sn.enable(argent).then((ag) => {
+                result.value = ag;
+                get_guardian();
+                get_escape();
+            }).catch(() => {
+                console.log("You refused");
+            });
+        }else {
+            // TODO Handle this either no wallet or no argent.
+        }
     }
 
     async function get_escape(){
