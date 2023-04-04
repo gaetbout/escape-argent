@@ -4,14 +4,18 @@
         <button @click=" handle_connect()">Connect wallet</button>
     </div>
 
-    <div v-if="result">
-        <div v-if="has_guardian">USER HAS GUARDIAN TO GET RID OF
-            <div v-if="result" class="flex justify-center">
+    <div v-if="result" class="flex justify-center">
+        <div v-if="has_guardian">
+            USER HAS GUARDIAN TO GET RID OF
+            <div class="flex justify-center">
                 Account: {{ result.selectedAddress }}
             </div>
-
+            <br>
+            <div class="flex justify-center">
+                <button @click=" handle_trigger_escape()">Escape wallet</button>
+            </div>
+            <br>
             <div v-if="escape_type" class="flex justify-center">
-
                 <div v-if="escape_type == 1">
                     Escape of the guardian ongoing <br>
                     Timeleft: {{ timeleft }}
@@ -24,12 +28,14 @@
                     That's a new escape type
                 </div>
             </div>
-
-            <div class="flex justify-center">
-                <button @click=" do_trigger_escape()">Escape wallet</button>
+            <div>
+                <input v-model="new_guardian" placeholder="New guardian (0x...)" />
+                <br>
+                <button @click="handle_escape_guardian()">Change guardian to {{ new_guardian }}</button>
             </div>
         </div>
-        <div v-else>USER HAS NO GUARDIAN TO GET RID OF ALL NICE
+        <div v-else> 
+            USER HAS NO GUARDIAN TO GET RID OF ALL NICE
         </div>
     </div>
 </template>
@@ -37,12 +43,14 @@
 <script setup lang="ts">
     import { connect, } from "get-starknet"
     import { ref } from 'vue'
+    import { number } from 'starknet'
 
 
     let result = ref(null);
     let has_guardian = ref(null);
     let escape_type = ref(null);
     let timeleft = ref(null);
+    let new_guardian = ref(null);
 
     async function handle_connect() {
         result.value = await connect();
@@ -63,16 +71,34 @@
         let timestamp = block.timestamp;
         timeleft.value = secondsToDhms(activeAt - timestamp);
     }
-    
+
     async function get_guardian(){
         const testAddress = result.value.selectedAddress;
         has_guardian.value = await result.value.provider.callContract({contractAddress: testAddress, entrypoint:"getGuardian"});
     }
     
-    async function do_trigger_escape() {
+    async function handle_trigger_escape() {
         await this.result.account.execute({
             contractAddress: this.result.selectedAddress,
             entrypoint: 'triggerEscapeGuardian'
+        });   
+    }
+
+    async function handle_escape_guardian() {
+        if (new_guardian.value == null) {
+            console.log("Nothing to escape");
+            return;
+        }
+        if (new_guardian.value == "0" ) {
+            console.log("GOING to escape to zero");
+            return;
+        }
+        let new_guardian_as_felt = number.toFelt(new_guardian.value);
+        // TODO ensure guardian iss valid format!
+        await this.result.account.execute({
+            contractAddress: this.result.selectedAddress,
+            entrypoint: 'escapeGuardian',
+            calldata:[new_guardian_as_felt],
         });   
     }
 
