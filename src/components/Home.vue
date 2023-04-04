@@ -3,11 +3,18 @@
     <div class="flex justify-center">
         <button @click=" handle_connect()">Connect wallet</button>
     </div>
-    <div class="flex justify-center">
-        <div v-if="result">Result: {{ result.selectedAddress }}</div>
-    </div>
-    <div class="flex justify-center">
-        <button @click=" do_trigger_escape()">Escape wallet</button>
+
+    <div v-if="result">
+        <div v-if="has_guardian">USER HAS GUARDIAN TO GET RID OF
+            <div class="flex justify-center">
+                <div v-if="result">Result: {{ result.selectedAddress }}</div>
+            </div>
+            <div class="flex justify-center">
+                <button @click=" do_trigger_escape()">Escape wallet</button>
+            </div>
+        </div>
+        <div v-else>USER HAS NO GUARDIAN TO GET RID OF ALL NICE
+        </div>
     </div>
 </template>
 
@@ -18,20 +25,19 @@
 
 
     let result = ref(null);
+    let has_guardian = ref(null);
 
     async function handle_connect() {
         result.value = await connect();
         console.log(result.value);
         get_guardian();
     }
-    
-    // Check if there is no guardian ==> Nothing to do
 
     async function get_guardian(){
         const testAddress = result.value.selectedAddress;
 
         let a = await result.value.provider.callContract({contractAddress: testAddress, entrypoint:"getGuardian"});
-        console.log(a.result[0] != 0);
+        has_guardian.value = a != 0;
     }
     
     async function do_trigger_escape() {
