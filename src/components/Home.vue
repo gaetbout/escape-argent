@@ -29,7 +29,7 @@
                 </div>
             </div>
             <div>
-                <input v-model="new_guardian" placeholder="New guardian (0x...)" />
+                <input v-model="new_guardian" placeholder="New guardian (0x...)">
                 <br>
                 <button @click="handle_escape_guardian()">Change guardian to {{ new_guardian }}</button>
             </div>
@@ -72,6 +72,7 @@
         escape_type.value = type
         let block = await result.value.provider.getBlock();
         let timestamp = block.timestamp;
+        // TODO Do a timer animated
         timeleft.value = secondsToDhms(activeAt - timestamp);
     }
 
