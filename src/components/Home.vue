@@ -33,6 +33,9 @@
                 <br>
                 <button @click="handle_escape_guardian()">Change guardian to {{ new_guardian }}</button>
             </div>
+            <div>
+                <button @click="handle_remove_guardian()">I don't need guardian</button>
+            </div>
         </div>
         <div v-else> 
             USER HAS NO GUARDIAN TO GET RID OF ALL NICE
@@ -86,21 +89,31 @@
 
     async function handle_escape_guardian() {
         if (new_guardian.value == null) {
-            console.log("Nothing to escape");
+            // TODO Disable send button
             return;
         }
-        if (new_guardian.value == "0" ) {
-            console.log("GOING to escape to zero");
-            return;
-        }
+
         let new_guardian_as_felt = number.toFelt(new_guardian.value);
-        // TODO ensure guardian iss valid format!
+        if (new_guardian_as_felt == "0" ) {
+            // TODO Tell the user to use the other path
+            return;
+        }
+
+        // TODO ensure guardian is valid format!
         await this.result.account.execute({
             contractAddress: this.result.selectedAddress,
             entrypoint: 'escapeGuardian',
             calldata:[new_guardian_as_felt],
         });   
     }
+    async function handle_remove_guardian() {
+        await this.result.account.execute({
+            contractAddress: this.result.selectedAddress,
+            entrypoint: 'escapeGuardian',
+            calldata:[0],
+        });   
+    }
+    handle_remove_guardian
 
     function secondsToDhms(seconds: number) {
         seconds = Number(seconds);
