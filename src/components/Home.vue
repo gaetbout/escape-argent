@@ -54,9 +54,6 @@
         const testAddress = result.value.selectedAddress;
         let res = await result.value.provider.callContract({contractAddress: testAddress, entrypoint:"getEscape"});
         let [activeAt, type] = res.result;
-        console.log(activeAt);
-        console.log(type);
-        console.log(await result.value.provider.getBlock());
         if (activeAt == 0) {
             // No Escape can go on and perform escape
             return;
@@ -66,8 +63,20 @@
         let timestamp = block.timestamp;
         timeleft.value = secondsToDhms(activeAt - timestamp);
     }
+    
+    async function get_guardian(){
+        const testAddress = result.value.selectedAddress;
+        has_guardian.value = await result.value.provider.callContract({contractAddress: testAddress, entrypoint:"getGuardian"});
+    }
+    
+    async function do_trigger_escape() {
+        await this.result.account.execute({
+            contractAddress: this.result.selectedAddress,
+            entrypoint: 'triggerEscapeGuardian'
+        });   
+    }
 
-    function secondsToDhms(seconds) {
+    function secondsToDhms(seconds: number) {
         seconds = Number(seconds);
         var d = Math.floor(seconds / (3600*24));
         var h = Math.floor(seconds % (3600*24) / 3600);
@@ -79,17 +88,6 @@
         var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
         var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
         return dDisplay + hDisplay + mDisplay + sDisplay;
-    }
-    async function get_guardian(){
-        const testAddress = result.value.selectedAddress;
-        has_guardian.value = await result.value.provider.callContract({contractAddress: testAddress, entrypoint:"getGuardian"});
-    }
-    
-    async function do_trigger_escape() {
-        await this.result.account.execute({
-            contractAddress: this.result.selectedAddress,
-            entrypoint: 'triggerEscapeGuardian'
-        });   
     }
 
 </script>
