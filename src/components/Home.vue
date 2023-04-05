@@ -1,7 +1,11 @@
-
 <template>
-    <div class="flex justify-center">
-        <button @click=" handle_connect()">Connect wallet</button>
+    <div class="flex justify-center items-center h-screen">
+        <div class="text-center">
+            <h1 class="text-8xl font-bold mb-4">Escape Argent</h1>
+            <button class="transition duration-300 ease-in-out hover:scale-110 text-white text-4xl font-bold mt-10 py-4 px-8 rounded-full" @click=" handle_connect()">
+                Connect wallet
+            </button>
+        </div>
     </div>
 
     <div v-if="result" class="flex justify-center">
@@ -143,4 +147,11 @@
 </script>
 
 <style>
+button {
+    background-color: var(--primary-color);
+}
+
+button:hover {
+    background-color: var(--primary-color-hover);
+}
 </style>
