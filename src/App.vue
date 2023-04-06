@@ -1,25 +1,36 @@
 <template>
     <router-view />
+    <ArgentLogo id="bg" width="48vh" height="44vh" fill="#999999" />
 </template>
 
 <script setup lang="ts">
+    import ArgentLogo from './components/ArgentLogo.vue';
 </script>
 
 
 <style>
 :root {
-    --primary-color: #FD875B;
+    --primary-color: hsl(16, 98%, 67%);
     --primary-color-hover: hsl(16, 98%, 57%);
+}
+
+#bg {
+  position: absolute;
+  top:65vh;
+  left:60vw;
+  z-index: -1;
 }
 /* Some resets */
 *, *::before, *::after {
   box-sizing: border-box;
 }
 * {
+  overflow: hidden;
   margin: 0;
 }
 html, body, #app {
   height: 100%;
+  font-family: "Barlow", sans-serif;
 }
 body {
   line-height: 1.5;

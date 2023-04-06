@@ -1,13 +1,12 @@
 <template>
     <div class="flex justify-center items-center h-screen">
         <div class="text-center">
-            <h1 class="text-8xl font-bold mb-4">Escape Argent</h1>
-            <button class="transition duration-300 ease-in-out hover:scale-110 text-white text-4xl font-bold mt-10 py-4 px-8 rounded-full" @click=" handle_connect()">
-                Connect wallet
+            <h1 class="text-8xl font-bold p-10 ">Escape Argent</h1>
+            <button class="transition duration-300 ease-in-out hover:scale-110 text-white text-5xl font-bold py-6 px-12 rounded-full" @click=" handle_connect()">
+                Connect wallet <ArgentLogo width="48" height="44" fill="#FFFFFF" />
             </button>
         </div>
     </div>
-
     <div v-if="result" class="flex justify-center">
         <div v-if="has_guardian">
             USER HAS GUARDIAN TO GET RID OF
@@ -51,6 +50,7 @@
     import { ref } from 'vue'
     import { number } from 'starknet'
     import sn from 'get-starknet-core'
+    import ArgentLogo from './ArgentLogo.vue';
 
 
     let result = ref(null);
