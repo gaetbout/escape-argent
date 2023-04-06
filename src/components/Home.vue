@@ -1,19 +1,22 @@
 <template>
-    <div class="flex justify-center items-center h-screen">
+    <div v-if="!result" class="flex justify-center items-center h-screen">
         <div class="text-center">
             <h1 class="text-8xl font-bold p-10 ">Escape Argent</h1>
-            <button class="transition duration-300 ease-in-out hover:scale-110 text-white text-5xl font-bold py-6 px-12 rounded-full" @click=" handle_connect()">
-                Connect wallet <ArgentLogo width="48" height="44" fill="#FFFFFF" />
+            <button class="transition duration-300 ease-in-out hover:scale-110 text-white  py-4 px-10 rounded-full" @click=" handle_connect()">
+                <div class="text-4xl font-bold">
+                    Connect wallet <ArgentLogo width="36" height="40" fill="#FFFFFF" />
+                </div>
             </button>
         </div>
     </div>
-    <div v-if="result" class="flex justify-center">
+    <div v-else class="flex justify-center">
+        <button class="transition duration-300 ease-in-out hover:scale-110 text-white py-4 px-10 rounded-full fixed right-4 top-4" @click=" handle_connect()">
+            <div class="text-xl font-bold">
+                Connected with {{ address }}
+            </div>
+        </button>
         <div v-if="has_guardian">
             USER HAS GUARDIAN TO GET RID OF
-            <div class="flex justify-center">
-                Account: {{ result.selectedAddress }}
-            </div>
-            <br>
             <div class="flex justify-center">
                 <button @click=" handle_trigger_escape()">Escape wallet</button>
             </div>
@@ -40,8 +43,10 @@
                 <button @click="handle_remove_guardian()">I don't need guardian</button>
             </div>
         </div>
-        <div v-else> 
-            USER HAS NO GUARDIAN TO GET RID OF ALL NICE
+        <div class="flex justify-center items-center h-screen">
+            <div class="text-center">
+                <h1 class="text-6xl font-bold p-10 ">You are already freed from Argent</h1>
+            </div>
         </div>
     </div>
 </template>
@@ -52,7 +57,8 @@
     import sn from 'get-starknet-core'
     import ArgentLogo from './ArgentLogo.vue';
 
-
+    // TODO detect network? 
+    let address = ref(null);
     let result = ref(null);
     let has_guardian = ref(null);
     let escape_type = ref(null);
@@ -62,8 +68,9 @@
     async function handle_connect() {
         const argent = (await sn.getAvailableWallets()).find(wallet => wallet.id === "argentX"  );
         if (argent) {
-            sn.enable(argent).then((ag) => {
-                result.value = ag;
+            sn.enable(argent).then((acc) => {
+                result.value = acc;
+                address.value = acc.selectedAddress.slice(0, 6) + "..." + acc.selectedAddress.slice(-3); 
                 get_guardian();
                 get_escape();
             }).catch(() => {
