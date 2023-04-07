@@ -16,34 +16,35 @@
             </div>
         </button>
         <div v-if="has_guardian">
-            USER HAS GUARDIAN TO GET RID OF
-            <div class="flex justify-center">
+            <div v-if="!escape_type" class="flex justify-center">
+                USER HAS GUARDIAN TO GET RID OF
                 <button @click=" handle_trigger_escape()">Escape wallet</button>
             </div>
-            <br>
             <div v-if="escape_type" class="flex justify-center">
-                <div v-if="escape_type == 1">
-                    Escape of the guardian ongoing <br>
-                    Timeleft: {{ timeleft }}
-                </div>
-                <div v-else-if="escape_type == 2">
-                    Escape of the signer ongoing <br>
-                    Timeleft: {{ timeleft }}
-                </div>
-                <div v-else>
-                    That's a new escape type
-                </div>
+                <div class="flex justify-center items-center h-screen">
+                    <div class="text-center">
+                        <div v-if="escape_type == 1">
+                            <h1 class="text-6xl font-bold p-10 ">Escape of the guardian ongoing</h1>
+                            Timeleft: {{ timeleft }}
+                        </div>
+                        <div v-else-if="escape_type == 2">
+                            <h1 class="text-6xl font-bold p-10 ">Escape of the signer ongoing</h1>
+                            Timeleft: {{ timeleft }}
+                        </div>
+                        <div v-else>
+                            <h1 class="text-6xl font-bold p-10 ">That's a new escape type</h1>
+                        </div>
+                    </div>
+                </div>      
             </div>
-            <div>
+            <div v-else>
                 <input v-model="new_guardian" placeholder="New guardian (0x...)">
                 <br>
                 <button @click="handle_escape_guardian()">Change guardian to {{ new_guardian }}</button>
-            </div>
-            <div>
                 <button @click="handle_remove_guardian()">I don't need guardian</button>
             </div>
         </div>
-        <div class="flex justify-center items-center h-screen">
+        <div v-else class="flex justify-center items-center h-screen">
             <div class="text-center">
                 <h1 class="text-6xl font-bold p-10 ">You are already freed from Argent</h1>
             </div>
