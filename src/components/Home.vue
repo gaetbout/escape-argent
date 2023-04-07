@@ -57,7 +57,7 @@
     import { ref } from 'vue'
     import { number } from 'starknet'
     import sn from 'get-starknet-core'
-    import ArgentLogo from './ArgentLogo.vue';
+    import ArgentLogo from '@/components/ArgentLogo.vue';
 
     let address = ref(null);
     let result = ref(null);
