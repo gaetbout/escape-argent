@@ -15,6 +15,7 @@
                 Connected with {{ address }}
             </div>
         </button>
+        <!-- TODO Review if else logic and split into components -->
         <div v-if="has_guardian">
             <div v-if="!escape_type" class="flex justify-center">
                 USER HAS GUARDIAN TO GET RID OF
@@ -58,7 +59,6 @@
     import sn from 'get-starknet-core'
     import ArgentLogo from './ArgentLogo.vue';
 
-    // TODO detect network? 
     let address = ref(null);
     let result = ref(null);
     let has_guardian = ref(null);
