@@ -26,14 +26,15 @@
                     <div class="text-center">
                         <div v-if="escape_type == 1">
                             <h1 class="text-6xl font-bold p-10 ">Escape of the guardian ongoing</h1>
-                            Timeleft: {{ timeleft }}
                         </div>
                         <div v-else-if="escape_type == 2">
                             <h1 class="text-6xl font-bold p-10 ">Escape of the signer ongoing</h1>
-                            Timeleft: {{ timeleft }}
                         </div>
                         <div v-else>
                             <h1 class="text-6xl font-bold p-10 ">That's a new escape type</h1>
+                        </div>
+                        <div v-if="timeleft"> 
+                            <Timer :timeleft="timeleft" />
                         </div>
                     </div>
                 </div>      
@@ -58,6 +59,7 @@
     import { number } from 'starknet'
     import sn from 'get-starknet-core'
     import ArgentLogo from '@/components/ArgentLogo.vue';
+    import Timer from '@/components/Timer.vue';
 
     let address = ref(null);
     let result = ref(null);
@@ -100,7 +102,7 @@
         let block = await result.value.provider.getBlock();
         let timestamp = block.timestamp;
         // TODO Do a timer animated
-        timeleft.value = secondsToDhms(activeAt - timestamp);
+        timeleft.value = activeAt - timestamp;
     }
 
     async function get_guardian(){
@@ -142,22 +144,6 @@
             calldata:[0],
         });   
     }
-    handle_remove_guardian
-
-    function secondsToDhms(seconds: number) {
-        seconds = Number(seconds);
-        var d = Math.floor(seconds / (3600*24));
-        var h = Math.floor(seconds % (3600*24) / 3600);
-        var m = Math.floor(seconds % 3600 / 60);
-        var s = Math.floor(seconds % 60);
-
-        var dDisplay = d > 0 ? d + (d == 1 ? " day, " : " days, ") : "";
-        var hDisplay = h > 0 ? h + (h == 1 ? " hour, " : " hours, ") : "";
-        var mDisplay = m > 0 ? m + (m == 1 ? " minute, " : " minutes, ") : "";
-        var sDisplay = s > 0 ? s + (s == 1 ? " second" : " seconds") : "";
-        return dDisplay + hDisplay + mDisplay + sDisplay;
-    }
-
 </script>
 
 <style>
