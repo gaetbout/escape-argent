@@ -1,6 +1,6 @@
 <template>
     <router-view />
-    <ArgentLogo id="bg" width="200vh" height="170vh" fill="#DDDDDD" />
+    <ArgentLogo id="bg" width="200vh" height="170vh" fill="hsl(16, 98%, 92%)" />
 </template>
 
 <script setup lang="ts">
