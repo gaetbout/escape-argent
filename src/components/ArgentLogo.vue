@@ -9,12 +9,5 @@
     </svg>
 </template>
 
-<script lang="ts">
-    export default {
-        name: 'ArgentLogo',
-    }
-
-</script>
-
 <style scoped>
 </style>
