@@ -1,6 +1,6 @@
 <template>
     <router-view />
-    <ArgentLogo id="bg" width="48vh" height="44vh" fill="#999999" />
+    <ArgentLogo id="bg" width="200vh" height="170vh" fill="#DDDDDD" />
 </template>
 
 <script setup lang="ts">
@@ -16,8 +16,8 @@
 
 #bg {
   position: absolute;
-  top:65vh;
-  left:60vw;
+  top:-20vh;
+  left:30vw;
   z-index: -1;
 }
 /* Some resets */
@@ -25,6 +25,7 @@
   box-sizing: border-box;
 }
 * {
+  overflow: hidden; 
   /* overflow: hidden; TODO RE-ENABLE*/ 
   margin: 0;
 }
