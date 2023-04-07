@@ -10,7 +10,7 @@
         </div>
     </div>
     <div v-else class="flex justify-center">
-        <button class="transition duration-300 ease-in-out hover:scale-110 text-white py-4 px-10 rounded-full fixed right-4 top-4" @click=" handle_connect()">
+        <button class="transition duration-300 ease-in-out hover:scale-110 text-white py-4 px-10 rounded-full fixed right-4 top-4" @click=" handle_disconnect()">
             <div class="text-xl font-bold">
                 Connected with {{ address }}
             </div>
@@ -81,6 +81,12 @@
             // TODO Handle this either no wallet or no argent.
         }
     }
+
+    async function handle_disconnect() {
+        sn.disconnect();
+        result.value = null;
+    }
+
 
     async function get_escape(){
         const testAddress = result.value.selectedAddress;

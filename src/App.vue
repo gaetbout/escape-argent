@@ -26,7 +26,6 @@
 }
 * {
   overflow: hidden; 
-  /* overflow: hidden; TODO RE-ENABLE*/ 
   margin: 0;
 }
 html, body, #app {
