@@ -36,12 +36,14 @@
                         <div v-if="timeleft"> 
                             <Timer 
                                 :deadline-date="timeleft" 
-                                main-color="green"
-                                second-flip-color="red"
-                                main-flip-background-color="blue"
-                                second-flip-background-color="purple"
-                                label-color="cyan"
+                                countdown-size="4rem"
+                                label-size="2rem"
+                                main-color="hsl(16, 98%, 67%)"
+                                second-flip-color="hsl(16, 98%, 62%)"
+                                label-color="hsl(16, 98%, 57%)"
                             />
+                            <!-- main-flip-background-color="blue"
+                            second-flip-background-color="purple" -->
                         </div>
                     </div>
                 </div>      
