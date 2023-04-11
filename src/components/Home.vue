@@ -38,8 +38,8 @@
                                 :deadline-date="timeleft" 
                                 countdown-size="4rem"
                                 label-size="2rem"
-                                main-color="hsl(16, 98%, 67%)"
-                                second-flip-color="hsl(16, 98%, 62%)"
+                                main-color="hsl(16, 98%, 62%)"
+                                second-flip-color="hsl(16, 98%, 67%)"
                                 label-color="hsl(16, 98%, 57%)"
                             />
                             <!-- main-flip-background-color="blue"
