@@ -34,7 +34,7 @@
                             <h1 class="text-6xl font-bold p-10 ">That's a new escape type</h1>
                         </div>
                         <div v-if="timeleft"> 
-                            <Timer :timeleft="timeleft" />
+                            <Timer :timeleft="timeleft" mainColor="#FFFFFF"/>
                         </div>
                     </div>
                 </div>      

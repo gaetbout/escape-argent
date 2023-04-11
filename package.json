@@ -14,7 +14,7 @@
         "starknet": "^4.22.0",
         "vue": "~3",
         "vue-router": "~4",
-        "vue-timer-hook": "^1.0.74"
+        "vue3-flip-countdown": "^0.1.6"
     },
     "devDependencies": {
         "@types/node": "^18.0",
