@@ -17,43 +17,17 @@
         </button>
         <!-- TODO Review if else logic and split into components -->
         <div v-if="has_guardian">
-            <div v-if="!escape_type" class="flex justify-center">
+            <EscapeOngoing v-if="escape_type" :escape_type="escape_type" :result="result" />
+            <div v-else  class="flex justify-center">
                 USER HAS GUARDIAN TO GET RID OF
                 <button @click=" handle_trigger_escape()">Escape wallet</button>
             </div>
-            <div v-if="escape_type" class="flex justify-center">
-                <div class="flex justify-center items-center h-screen">
-                    <div class="text-center">
-                        <div v-if="escape_type == 1">
-                            <h1 class="text-6xl font-bold p-10 ">Escape of the guardian ongoing</h1>
-                        </div>
-                        <div v-else-if="escape_type == 2">
-                            <h1 class="text-6xl font-bold p-10 ">Escape of the signer ongoing</h1>
-                        </div>
-                        <div v-else>
-                            <h1 class="text-6xl font-bold p-10 ">That's a new escape type</h1>
-                        </div>
-                        <div v-if="timeleft"> 
-                            <Timer 
-                                :deadline-date="timeleft" 
-                                countdown-size="4rem"
-                                label-size="2rem"
-                                main-color="hsl(16, 98%, 62%)"
-                                second-flip-color="hsl(16, 98%, 67%)"
-                                label-color="hsl(16, 98%, 57%)"
-                            />
-                            <!-- main-flip-background-color="blue"
-                            second-flip-background-color="purple" -->
-                        </div>
-                    </div>
-                </div>      
-            </div>
-            <div v-else>
+            <!-- <div v-else>
                 <input v-model="new_guardian" placeholder="New guardian (0x...)">
                 <br>
                 <button @click="handle_escape_guardian()">Change guardian to {{ new_guardian }}</button>
                 <button @click="handle_remove_guardian()">I don't need guardian</button>
-            </div>
+            </div> -->
         </div>
         <div v-else class="flex justify-center items-center h-screen">
             <div class="text-center">
@@ -67,8 +41,9 @@
     import { ref } from 'vue'
     import { number } from 'starknet'
     import sn from 'get-starknet-core'
+    // TODO Clean components path?
     import ArgentLogo from '@/components/ArgentLogo.vue';
-    import Timer from '@/components/Timer.vue';
+    import EscapeOngoing from '@/components/EscapeOngoing.vue';
 
     let address = ref(null);
     let result = ref(null);
