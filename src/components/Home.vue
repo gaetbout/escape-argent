@@ -34,7 +34,14 @@
                             <h1 class="text-6xl font-bold p-10 ">That's a new escape type</h1>
                         </div>
                         <div v-if="timeleft"> 
-                            <Timer :timeleft="timeleft" mainColor="#FFFFFF"/>
+                            <Timer 
+                                :timeleft="timeleft" 
+                                main-color="green"
+                                second-flip-color="red"
+                                main-flip-background-color="blue"
+                                second-flip-background-color="purple"
+                                label-color="cyan"
+                            />
                         </div>
                     </div>
                 </div>      
@@ -102,7 +109,8 @@
         let block = await result.value.provider.getBlock();
         let timestamp = block.timestamp;
         // TODO Do a timer animated
-        timeleft.value = activeAt - timestamp;
+        timeleft.value = new Date((activeAt - timestamp) * 1000);
+        console.log(timeleft.value);
     }
 
     async function get_guardian(){
