@@ -35,7 +35,7 @@
                         </div>
                         <div v-if="timeleft"> 
                             <Timer 
-                                :timeleft="timeleft" 
+                                :deadline-date="timeleft" 
                                 main-color="green"
                                 second-flip-color="red"
                                 main-flip-background-color="blue"
@@ -106,11 +106,10 @@
             return;
         }
         escape_type.value = type
-        let block = await result.value.provider.getBlock();
-        let timestamp = block.timestamp;
         // TODO Do a timer animated
-        timeleft.value = new Date((activeAt - timestamp) * 1000);
-        console.log(timeleft.value);
+        let date = new Date(activeAt * 1000);
+        console.log(date);
+        timeleft.value = date;
     }
 
     async function get_guardian(){
@@ -123,6 +122,7 @@
             contractAddress: this.result.selectedAddress,
             entrypoint: 'triggerEscapeGuardian'
         });   
+        // TODO Once done, should update page
     }
 
     async function handle_escape_guardian() {
