@@ -19,24 +19,9 @@
             </div>
         </button>
         <!-- TODO Review if else logic and split into components -->
-        <div v-if="has_guardian">
+        <div v-if="current_guardian">
             <EscapeOngoing v-if="escapeType" :escape-type="escapeType" :result="result" />
-            <div v-else class="flex justify-center">
-                <div class="flex justify-center items-center h-screen">
-                    <div class="flex flex-col items-center">
-                        <h1 class="text-6xl font-bold p-2">Looks like you want to escape </h1>
-                        <h2 class="text-5xl font-bold p-5">Current guardian: {{ has_guardian }}</h2>
-                        <button 
-                            class="transition duration-300 ease-in-out hover:scale-110 text-white m-1 py-4 px-10 rounded-full" 
-                            @click=" handle_trigger_escape()"
-                        >
-                            <div class="text-xl font-bold">
-                                Escape wallet
-                            </div>
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <TriggerEscape v-else :result="result" :guardian="current_guardian" />
             <!-- <div v-else>
                 <input v-model="new_guardian" placeholder="New guardian (0x...)">
                 <br>
@@ -59,9 +44,10 @@
     // TODO Clean components path?
     import ArgentLogo from '@/components/ArgentLogo.vue';
     import EscapeOngoing from '@/components/EscapeOngoing.vue';
+    import TriggerEscape from '@/components/TriggerEscape.vue';
 
     let result = ref(null);
-    let has_guardian = ref(null);
+    let current_guardian = ref(null);
     let escapeType = ref(null);
     let timeleft = ref(null);
     let new_guardian = ref(null);
@@ -103,7 +89,7 @@
 
     async function get_guardian(){
         const res = await result.value.provider.callContract({contractAddress: result.value.selectedAddress, entrypoint:"getGuardian"});
-        has_guardian.value = res.result[0];
+        current_guardian.value = res.result[0];
     }
     
     async function handle_trigger_escape() {
