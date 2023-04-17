@@ -10,17 +10,32 @@
         </div>
     </div>
     <div v-else class="flex justify-center">
-        <button class="transition duration-300 ease-in-out hover:scale-110 text-white py-4 px-10 rounded-full fixed right-4 top-4" @click=" handle_disconnect()">
+        <button 
+            class="transition duration-300 ease-in-out hover:scale-110 text-white py-4 px-10 rounded-full fixed right-4 top-4" 
+            @click=" handle_disconnect()"
+        >
             <div class="text-xl font-bold">
                 Connected with {{ address }}
             </div>
         </button>
         <!-- TODO Review if else logic and split into components -->
         <div v-if="has_guardian">
-            <EscapeOngoing v-if="escape_type" :escape_type="escape_type" :result="result" />
-            <div v-else  class="flex justify-center">
-                USER HAS GUARDIAN TO GET RID OF
-                <button @click=" handle_trigger_escape()">Escape wallet</button>
+            <EscapeOngoing v-if="escapeType" :escape-type="escapeType" :result="result" />
+            <div v-else class="flex justify-center">
+                <div class="flex justify-center items-center h-screen">
+                    <div class="flex flex-col items-center">
+                        <h1 class="text-6xl font-bold p-2">Looks like you want to escape </h1>
+                        <h2 class="text-5xl font-bold p-5">Current guardian: {{ has_guardian }}</h2>
+                        <button 
+                            class="transition duration-300 ease-in-out hover:scale-110 text-white m-1 py-4 px-10 rounded-full" 
+                            @click=" handle_trigger_escape()"
+                        >
+                            <div class="text-xl font-bold">
+                                Escape wallet
+                            </div>
+                        </button>
+                    </div>
+                </div>
             </div>
             <!-- <div v-else>
                 <input v-model="new_guardian" placeholder="New guardian (0x...)">
@@ -48,7 +63,7 @@
     let address = ref(null);
     let result = ref(null);
     let has_guardian = ref(null);
-    let escape_type = ref(null);
+    let escapeType = ref(null);
     let timeleft = ref(null);
     let new_guardian = ref(null);
 
@@ -63,7 +78,7 @@
             }).catch(() => {
                 console.log("You refused");
             });
-        }else {
+        } else {
             // TODO Handle this either no wallet or no argent.
         }
     }
@@ -73,7 +88,6 @@
         result.value = null;
     }
 
-
     async function get_escape(){
         const testAddress = result.value.selectedAddress;
         let res = await result.value.provider.callContract({contractAddress: testAddress, entrypoint:"getEscape"});
@@ -82,7 +96,7 @@
             // No Escape can go on and perform escape
             return;
         }
-        escape_type.value = type
+        escapeType.value = type
         // TODO Do a timer animated
         let date = new Date(activeAt * 1000);
         console.log(date);
@@ -91,7 +105,8 @@
 
     async function get_guardian(){
         const testAddress = result.value.selectedAddress;
-        has_guardian.value = await result.value.provider.callContract({contractAddress: testAddress, entrypoint:"getGuardian"});
+        const res = await result.value.provider.callContract({contractAddress: testAddress, entrypoint:"getGuardian"});
+        has_guardian.value = res.result[0];
     }
     
     async function handle_trigger_escape() {

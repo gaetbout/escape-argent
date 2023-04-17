@@ -2,14 +2,14 @@
     <div class="flex justify-center">
         <div class="flex justify-center items-center h-screen">
             <div class="text-center">
-                <div v-if="escape_type == 1">
+                <div v-if="escapeType == 1">
                     <h1 class="text-6xl font-bold p-10 ">Escape of the guardian ongoing</h1>
                 </div>
-                <div v-else-if="escape_type == 2">
+                <div v-else-if="escapeType == 2">
                     <h1 class="text-6xl font-bold p-10 ">Escape of the signer ongoing</h1>
                 </div>
                 <div v-else>
-                    <h1 class="text-6xl font-bold p-10 ">That's a new escape type {{ escape_type }}</h1>
+                    <h1 class="text-6xl font-bold p-10 ">That's a new escape type {{ escapeType }}</h1>
                 </div>
                 <div v-if="timeleft"> 
                     <Timer 
@@ -34,7 +34,7 @@
     import Timer from '@/components/Timer.vue';
     
     const props = defineProps({
-        escape_type: number,
+        escapeType: number,
         result: Object,
     });
 
