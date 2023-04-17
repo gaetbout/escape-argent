@@ -20,7 +20,7 @@
         </button>
         <!-- TODO Review if else logic and split into components -->
         <div v-if="current_guardian">
-            <EscapeOngoing v-if="escapeType" :escape-type="escapeType" :result="result" />
+            <EscapeOngoing v-if="escapeType" :escapeType="escapeType" :result="result" />
             <TriggerEscape v-else :result="result" :guardian="current_guardian" />
             <!-- <div v-else>
                 <input v-model="new_guardian" placeholder="New guardian (0x...)">

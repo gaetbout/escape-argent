@@ -20,8 +20,14 @@
 <script setup lang="ts">
 
     const props = defineProps({
-        result: Object,
-        guardian: String,
+        result: {
+            type: Object,
+            required:true,
+        },
+        guardian: {
+            type: String,
+            required:true,
+        },
     });
 
     // TODO Handle user refusing

@@ -2,10 +2,10 @@
     <div class="flex justify-center">
         <div class="flex justify-center items-center h-screen">
             <div class="text-center">
-                <div v-if="escapeType == 1">
+                <div v-if="escapeType == '1' ">
                     <h1 class="text-6xl font-bold p-10 ">Escape of the guardian ongoing</h1>
                 </div>
-                <div v-else-if="escapeType == 2">
+                <div v-else-if="escapeType == '2' ">
                     <h1 class="text-6xl font-bold p-10 ">Escape of the signer ongoing</h1>
                 </div>
                 <div v-else>
@@ -29,16 +29,21 @@
 </template>
 
 <script setup lang="ts">
-    import { number } from 'starknet';
     import { ref } from 'vue'
     import Timer from '@/components/Timer.vue';
     
     const props = defineProps({
-        escapeType: number,
-        result: Object,
+        escapeType: {
+            type: String,
+            required:true,
+        },
+        result: {
+            type: Object,
+            required:true,
+        },
     });
 
-    let timeleft = ref(null);
+    let timeleft = ref<Date | null>(null);
     
     get_escape()
     async function get_escape(){
