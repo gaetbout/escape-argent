@@ -1,6 +1,6 @@
 <template>
     <Countdown />
-  </template>
+</template>
   
 <script lang="ts">
     import {Countdown} from 'vue3-flip-countdown'

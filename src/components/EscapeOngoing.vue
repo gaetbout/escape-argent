@@ -50,10 +50,16 @@
             // No Escape can go on and perform escape
             return;
         }
-        // TODO Do a timer animated
+        
         let date = new Date(activeAt * 1000);
         console.log(date);
         timeleft.value = date;
     }
 
+</script>
+
+<script lang="ts">
+    export default {
+        name: 'EscapeOngoing'
+    }
 </script>

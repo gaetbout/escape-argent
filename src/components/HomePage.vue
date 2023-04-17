@@ -15,7 +15,7 @@
             @click=" handle_disconnect()"
         >
             <div class="text-xl font-bold">
-                Connected with {{ address }}
+                Connected with {{ get_short_address(result.selectedAddress) }}
             </div>
         </button>
         <!-- TODO Review if else logic and split into components -->
@@ -60,7 +60,6 @@
     import ArgentLogo from '@/components/ArgentLogo.vue';
     import EscapeOngoing from '@/components/EscapeOngoing.vue';
 
-    let address = ref(null);
     let result = ref(null);
     let has_guardian = ref(null);
     let escapeType = ref(null);
@@ -72,7 +71,6 @@
         if (argent) {
             sn.enable(argent).then((acc) => {
                 result.value = acc;
-                address.value = acc.selectedAddress.slice(0, 6) + "..." + acc.selectedAddress.slice(-3); 
                 get_guardian();
                 get_escape();
             }).catch(() => {
@@ -104,8 +102,7 @@
     }
 
     async function get_guardian(){
-        const testAddress = result.value.selectedAddress;
-        const res = await result.value.provider.callContract({contractAddress: testAddress, entrypoint:"getGuardian"});
+        const res = await result.value.provider.callContract({contractAddress: result.value.selectedAddress, entrypoint:"getGuardian"});
         has_guardian.value = res.result[0];
     }
     
@@ -136,6 +133,7 @@
             calldata:[new_guardian_as_felt],
         });   
     }
+    
     async function handle_remove_guardian() {
         // TODO ask for confirmation and say it is very risky
         await this.result.account.execute({
@@ -143,6 +141,10 @@
             entrypoint: 'escapeGuardian',
             calldata:[0],
         });   
+    }
+
+    function get_short_address(address: string) {
+        return address.slice(0, 5) + "..." + address.slice(-4)
     }
 </script>
 
