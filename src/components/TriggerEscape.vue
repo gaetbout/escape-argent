@@ -25,6 +25,7 @@
     });
 
     // TODO Handle user refusing
+    // TODO Signal parent start timer
     async function handle_trigger_escape() {
         await props.result?.account.execute({
             contractAddress: props.result?.selectedAddress,

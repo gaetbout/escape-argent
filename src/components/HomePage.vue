@@ -91,14 +91,6 @@
         const res = await result.value.provider.callContract({contractAddress: result.value.selectedAddress, entrypoint:"getGuardian"});
         current_guardian.value = res.result[0];
     }
-    
-    async function handle_trigger_escape() {
-        await this.result.account.execute({
-            contractAddress: this.result.selectedAddress,
-            entrypoint: 'triggerEscapeGuardian'
-        });   
-        // TODO Once done, should update page
-    }
 
     async function handle_escape_guardian() {
         if (new_guardian.value == null) {
