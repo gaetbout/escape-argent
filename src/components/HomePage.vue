@@ -20,14 +20,8 @@
         </button>
         <!-- TODO Review if else logic and split into components -->
         <div v-if="current_guardian">
-            <EscapeOngoing v-if="escapeType" :escapeType="escapeType" :result="result" />
+            <EscapeOngoing v-if="escape" :escape="escape" :result="result" />
             <TriggerEscape v-else :result="result" :guardian="current_guardian" />
-            <!-- <div v-else>
-                <input v-model="new_guardian" placeholder="New guardian (0x...)">
-                <br>
-                <button @click="handle_escape_guardian()">Change guardian to {{ new_guardian }}</button>
-                <button @click="handle_remove_guardian()">I don't need guardian</button>
-            </div> -->
         </div>
         <div v-else class="flex justify-center items-center h-screen">
             <div class="text-center">
@@ -39,7 +33,6 @@
 
 <script setup lang="ts">
     import { ref } from 'vue'
-    import { number } from 'starknet'
     import sn from 'get-starknet-core'
     // TODO Clean components path?
     import ArgentLogo from '@/components/ArgentLogo.vue';
@@ -48,9 +41,7 @@
 
     let result = ref(null);
     let current_guardian = ref(null);
-    let escapeType = ref(null);
-    let timeleft = ref(null);
-    let new_guardian = ref(null);
+    let escape = ref(null);
 
     async function handle_connect() {
         const argent = (await sn.getAvailableWallets()).find(wallet => wallet.id === "argentX"  );
@@ -72,53 +63,16 @@
         result.value = null;
     }
 
+    // TODO Pq tu passse pas ça en dessous plutot que tout refaire?
     async function get_escape(){
         const testAddress = result.value.selectedAddress;
         let res = await result.value.provider.callContract({contractAddress: testAddress, entrypoint:"getEscape"});
-        let [activeAt, type] = res.result;
-        if (activeAt == 0) {
-            // No Escape can go on and perform escape
-            return;
-        }
-        escapeType.value = type
-        // TODO Do a timer animated
-        let date = new Date(activeAt * 1000);
-        console.log(date);
-        timeleft.value = date;
+        escape.value = res.result;
     }
 
     async function get_guardian(){
         const res = await result.value.provider.callContract({contractAddress: result.value.selectedAddress, entrypoint:"getGuardian"});
         current_guardian.value = res.result[0];
-    }
-
-    async function handle_escape_guardian() {
-        if (new_guardian.value == null) {
-            // TODO Disable send button
-            return;
-        }
-
-        let new_guardian_as_felt = number.toFelt(new_guardian.value);
-        if (new_guardian_as_felt == "0" ) {
-            // TODO Tell the user to use the other path
-            return;
-        }
-
-        // TODO ensure guardian is valid format!
-        await this.result.account.execute({
-            contractAddress: this.result.selectedAddress,
-            entrypoint: 'escapeGuardian',
-            calldata:[new_guardian_as_felt],
-        });   
-    }
-    
-    async function handle_remove_guardian() {
-        // TODO ask for confirmation and say it is very risky
-        await this.result.account.execute({
-            contractAddress: this.result.selectedAddress,
-            entrypoint: 'escapeGuardian',
-            calldata:[0],
-        });   
     }
 
     function get_short_address(address: string) {
