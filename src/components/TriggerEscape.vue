@@ -18,6 +18,7 @@
 </template>
 
 <script setup lang="ts">
+    import sn from 'get-starknet-core';
 
     const props = defineProps({
         result: {
@@ -30,13 +31,22 @@
         },
     });
 
-    // TODO Handle user refusing
-    // TODO Signal parent start timer
+    
     async function handle_trigger_escape() {
-        await props.result?.account.execute({
-            contractAddress: props.result?.selectedAddress,
+        await props.result.enable();
+        props.result.account.execute({
+            contractAddress: props.result.selectedAddress,
             entrypoint: 'triggerEscapeGuardian'
-        });   
+        })
+            .then((something:string) => {
+                // TODO Signal parent start timer
+                console.log(something)
+            })
+            .catch(async (e:string) => {
+                const argent = (await sn.getAvailableWallets()).find(wallet => wallet.id === "argentX");
+                sn.enable(argent).then( acc => props.result = acc);
+            });
+        // TODO Should trigger animation
     }
 
 </script>
