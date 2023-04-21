@@ -2,9 +2,10 @@
     <div v-if="!result" class="flex justify-center items-center h-screen">
         <div class="text-center">
             <h1 class="text-7xl font-bold p-10 ">Escape Argent</h1>
-            <button class="transition duration-300 ease-in-out hover:scale-110 text-white  py-4 px-10 rounded-full" @click=" handle_connect()">
+            <button class="transition duration-300 ease-in-out hover:scale-110 text-white mb-4 py-4 px-10 rounded-full" @click=" handle_connect()">
                 <div class="text-3xl font-bold">
-                    Connect wallet <ArgentLogo width="36" height="40" fill="#FFFFFF" />
+                    Connect wallet 
+                    <ArgentLogo width="36" height="40" fill="#FFFFFF" />
                 </div>
             </button>
         </div>

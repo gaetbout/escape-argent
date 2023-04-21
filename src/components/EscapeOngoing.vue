@@ -17,10 +17,17 @@
                     </div>
                 </div>
                 <div v-else>
-                    <input v-model="new_guardian" placeholder="New guardian (0x...)">
+                    <h1 class="text-6xl font-bold ">You can complete the escape</h1>
+                    <h2 class="text-22xl font-bold p-10 ">Be aware that you won't be able to recover this wallet if you get hacked or lose the the Private Key</h2>
                     <br>
-                    <!-- <button @click="handle_escape_guardian()">Change guardian to {{ new_guardian }}</button>
-                    <button @click="handle_remove_guardian()">I don't need guardian</button> -->
+                    <button 
+                        class="transition duration-300 ease-in-out hover:scale-110 text-white mb-4 py-4 px-10 rounded-full" 
+                        @click="handle_remove_guardian()"
+                    >
+                        <div class="text-3xl font-bold">
+                            I know what I'm doing
+                        </div>
+                    </button> 
                 </div>
             </div>
         </div>      
@@ -43,8 +50,7 @@
     });
 
     let timeleft = ref<Date | null>(null);
-    let new_guardian = ref(null);
-    
+
     let activeAt = props.escape[0];
     if (activeAt != 0) {
         let date = new Date(activeAt * 1000);
@@ -52,35 +58,14 @@
         timeleft.value = date;
     }
     
-
-    // async function handle_escape_guardian() {
-    //     if (new_guardian.value == null) {
-    //         // TODO Disable send button
-    //         return;
-    //     }
-
-    //     let new_guardian_as_felt = number.toFelt(new_guardian.value);
-    //     if (new_guardian_as_felt == "0" ) {
-    //         // TODO Tell the user to use the other path
-    //         return;
-    //     }
-
-    //     // TODO ensure guardian is valid format!
-    //     await this.result.account.execute({
-    //         contractAddress: this.result.selectedAddress,
-    //         entrypoint: 'escapeGuardian',
-    //         calldata:[new_guardian_as_felt],
-    //     });   
-    // }
-    
-    // async function handle_remove_guardian() {
-    //     // TODO ask for confirmation and say it is very risky
-    //     await this.result.account.execute({
-    //         contractAddress: this.result.selectedAddress,
-    //         entrypoint: 'escapeGuardian',
-    //         calldata:[0],
-    //     });   
-    // }
+    async function handle_remove_guardian() {
+        // TODO ask for confirmation and say it is very risky
+        await this.result.account.execute({
+            contractAddress: this.result.selectedAddress,
+            entrypoint: 'escapeGuardian',
+            calldata:[0],
+        });   
+    }
 </script>
 
 <script lang="ts">
