@@ -11,7 +11,6 @@
     },
     "dependencies": {
         "get-starknet-core": "^2.0.1",
-        "starknet": "^5.6.0",
         "vue": "~3",
         "vue-router": "~4",
         "vue3-flip-countdown": "^0.1.6"
