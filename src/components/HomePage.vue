@@ -49,8 +49,7 @@
 
     // TODO Pq tu passse pas ça en dessous plutot que tout refaire?
     async function get_escape(){
-        const testAddress = result.value.selectedAddress;
-        let res = await result.value.provider.callContract({contractAddress: testAddress, entrypoint:"getEscape"});
+        let res = await result.value.provider.callContract({contractAddress: result.value.selectedAddress, entrypoint:"getEscape"});
         escape.value = res.result;
     }
 

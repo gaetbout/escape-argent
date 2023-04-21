@@ -37,6 +37,7 @@
 <script setup lang="ts">
     import { ref } from 'vue'
     import TimeLeft from '@/components/TimeLeft.vue';
+    import sn from 'get-starknet-core'
     
     const props = defineProps({
         escape: {
@@ -63,12 +64,17 @@
     
     async function handle_remove_guardian() {
         // TODO ask for confirmation and say it is very risky
-        // TODO if closed + reopen ==> issue
+        await props.result.enable();
         await props.result.account.execute({
             contractAddress: props.result.selectedAddress,
             entrypoint: 'escapeGuardian',
             calldata:[0],
-        });   
+        })
+            .then((something:string) => console.log(something))
+            .catch(async (e:string) => {
+                const argent = (await sn.getAvailableWallets()).find(wallet => wallet.id === "argentX");
+                sn.enable(argent).then( acc => props.result = acc);
+            });   
     }
 </script>
 
