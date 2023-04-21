@@ -59,13 +59,13 @@
             let date = new Date(activeAt * 1000);
             timeleft.value = date;
         }
-
     }
     
     async function handle_remove_guardian() {
         // TODO ask for confirmation and say it is very risky
+        // TODO if closed + reopen ==> issue
         await props.result.account.execute({
-            contractAddress: this.result.selectedAddress,
+            contractAddress: props.result.selectedAddress,
             entrypoint: 'escapeGuardian',
             calldata:[0],
         });   
