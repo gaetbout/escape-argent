@@ -38,7 +38,6 @@
 
     function setResult(data: ConnectedStarknetWindowObject) {
         result.value = data;
-        console.log(data);
         get_guardian();
         get_escape();
     }
