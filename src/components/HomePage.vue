@@ -1,15 +1,5 @@
 <template>
-    <div v-if="!result" class="flex justify-center items-center h-screen">
-        <div class="text-center">
-            <h1 class="text-7xl font-bold p-10 ">Escape Argent</h1>
-            <button class="transition duration-300 ease-in-out hover:scale-110 text-white mb-4 py-4 px-10 rounded-full" @click=" handle_connect()">
-                <div class="text-3xl font-bold">
-                    Connect wallet 
-                    <ArgentLogo width="36" height="40" fill="#FFFFFF" />
-                </div>
-            </button>
-        </div>
-    </div>
+    <ConnectButton v-if="!result" class="flex justify-center items-center h-screen" @connected="setResult" />
     <div v-else class="flex justify-center">
         <button 
             class="transition duration-300 ease-in-out hover:scale-110 text-white py-4 px-10 rounded-full fixed right-4 top-4" 
@@ -35,8 +25,9 @@
 <script setup lang="ts">
     import { ref } from 'vue'
     import sn from 'get-starknet-core'
+    import { ConnectedStarknetWindowObject } from 'get-starknet-core';
     // TODO Clean components path?
-    import ArgentLogo from '@/components/ArgentLogo.vue';
+    import ConnectButton from '@/components/ConnectButton.vue';
     import EscapeOngoing from '@/components/EscapeOngoing.vue';
     import TriggerEscape from '@/components/TriggerEscape.vue';
 
@@ -44,19 +35,12 @@
     let current_guardian = ref(null);
     let escape = ref(null);
 
-    async function handle_connect() {
-        const argent = (await sn.getAvailableWallets()).find(wallet => wallet.id === "argentX"  );
-        if (argent) {
-            sn.enable(argent).then((acc) => {
-                result.value = acc;
-                get_guardian();
-                get_escape();
-            }).catch(() => {
-                console.log("You refused");
-            });
-        } else {
-            // TODO Handle this either no wallet or no argent.
-        }
+
+    function setResult(data: ConnectedStarknetWindowObject) {
+        result.value = data;
+        console.log(data);
+        get_guardian();
+        get_escape();
     }
 
     async function handle_disconnect() {

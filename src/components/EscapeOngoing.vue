@@ -48,19 +48,25 @@
             required:true,
         },
     });
+    
+    setTimeleft();
 
-    let timeleft = ref<Date | null>(null);
+    function setTimeleft() {
+        let timeleft = ref<Date | null>(null);
 
-    let activeAt = props.escape[0];
-    if (activeAt != 0) {
-        let date = new Date(activeAt * 1000);
-        console.log(date);
-        timeleft.value = date;
+        let activeAt = props.escape[0];
+        if (activeAt != 0) {
+            let date = new Date(activeAt * 1000);
+            console.log(date);
+            timeleft.value = date;
+        }
+
     }
     
     async function handle_remove_guardian() {
+        console.log(props.result);
         // TODO ask for confirmation and say it is very risky
-        await this.result.account.execute({
+        await props.result.account.execute({
             contractAddress: this.result.selectedAddress,
             entrypoint: 'escapeGuardian',
             calldata:[0],
