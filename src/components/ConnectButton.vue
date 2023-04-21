@@ -22,6 +22,7 @@
 </script>
 
 <script setup lang="ts">
+    // TODO Should I also put the Disconnect logic here?
     import sn from 'get-starknet-core'
     import ArgentLogo from '@/components/ArgentLogo.vue';
 
