@@ -1,8 +1,8 @@
 <template>
     <div class="flex justify-center items-center h-screen">
         <div class="text-center">
-            <div v-if="error">
-                <h1 class="text-7xl font-bold p-10 ">No ArgentX wallet installed</h1>
+            <div v-if="!argent">
+                <h1 class="text-7xl font-bold p-10 ">No ArgentX wallet detected</h1>
             </div>
             <div v-else>
                 <h1 class="text-7xl p-5 font-bold">Escape Argent</h1>
@@ -33,18 +33,19 @@
     import ArgentLogo from '@/components/ArgentLogo.vue';
 
     const emits = defineEmits(['connected']);
-    let error = ref(null);
+    let argent = ref(null);
+    
+    checkHasArgentWallet();
 
+    async function checkHasArgentWallet() {
+        argent.value = (await sn.getAvailableWallets()).find(wallet => wallet.id === "argentX"  );
+    }
+    
     async function handle_connect() {
-        const argent = (await sn.getAvailableWallets()).find(wallet => wallet.id === "argentX"  );
-        if (argent) {
-            sn.enable(argent).then( acc => {
-                emits('connected', acc)
-            }).catch(() => {
-                // Ignore
-            });
-        } else {
-            error.value = true;
-        }
+        sn.enable(argent.value).then( acc => {
+            emits('connected', acc)
+        }).catch(() => {
+            // Ignore
+        });
     }
 </script>
