@@ -17,8 +17,6 @@
             Countdown
         }
     }
-    
-    
 </script>
 
 <script setup lang="ts">

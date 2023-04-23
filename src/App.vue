@@ -1,10 +1,10 @@
 <template>
     <router-view />
-    <ArgentLogo id="bg" width="200vw" height="180vh" fill="hsl(16, 98%, 92%)" />
+    <ArgentBg />
 </template>
 
 <script setup lang="ts">
-    import ArgentLogo from '@/components/ArgentLogo.vue';
+import ArgentBg from '@/components/ArgentBg.vue';
 </script>
 
 
@@ -14,12 +14,6 @@
     --primary-color-hover: hsl(16, 98%, 57%);
 }
 
-#bg {
-  position: absolute;
-  top:-20vh;
-  left:30vw;
-  z-index: -1;
-}
 /* Some resets */
 *, *::before, *::after {
   box-sizing: border-box;
