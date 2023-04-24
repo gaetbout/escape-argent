@@ -1,36 +1,32 @@
 <template>
-    <div class="flex justify-center">
-        <div class="flex justify-center items-center h-screen">
-            <div class="text-center">
-                <div v-if="timeleft && timeleft > new Date()">
-                    <div v-if="escape[1] == '0x1'">
-                        <h1 class="text-6xl font-bold p-10 ">Escape of the guardian ongoing</h1>
-                    </div>
-                    <div v-else-if="escape[1] == '0x2' ">
-                        <h1 class="text-6xl font-bold p-10 ">Escape of the owner ongoing</h1>
-                    </div>
-                    <div v-else>
-                        <h1 class="text-6xl font-bold p-10 ">That's a new escape type {{ escape[1] }}</h1>
-                    </div>
-                    <div> 
-                        <TimeLeft :deadline-date="timeleft" />
-                    </div>
-                </div>
-                <div v-else>
-                    <h1 class="text-6xl font-bold ">You can complete the escape</h1>
-                    <h2 class="text-22xl font-bold p-10 ">Be aware that you won't be able to recover this wallet if you get hacked or lose the the Private Key</h2>
-                    <br>
-                    <button 
-                        class="transition duration-300 ease-in-out hover:scale-110 text-white mb-4 py-4 px-10 rounded-full" 
-                        @click="handle_remove_guardian()"
-                    >
-                        <div class="text-3xl font-bold">
-                            I know what I'm doing
-                        </div>
-                    </button> 
-                </div>
+    <div class="text-center">
+        <div v-if="timeleft && timeleft > new Date()">
+            <div v-if="escape[1] == '0x1'">
+                <h1 class="text-6xl font-bold p-10 ">Escape of the guardian ongoing</h1>
             </div>
-        </div>      
+            <div v-else-if="escape[1] == '0x2' ">
+                <h1 class="text-6xl font-bold p-10 ">Escape of the owner ongoing</h1>
+            </div>
+            <div v-else>
+                <h1 class="text-6xl font-bold p-10 ">That's a new escape type {{ escape[1] }}</h1>
+            </div>
+            <div> 
+                <TimeLeft :deadline-date="timeleft" />
+            </div>
+        </div>
+        <div v-else>
+            <h1 class="text-6xl font-bold ">You can complete the escape</h1>
+            <h2 class="text-xl font-bold p-10 ">Be aware that you won't be able to recover this wallet if you get hacked or lose the the Private Key</h2>
+            <br>
+            <button 
+                class="transition duration-300 ease-in-out hover:scale-110 text-white mb-4 py-4 px-10 rounded-full" 
+                @click="handle_remove_guardian()"
+            >
+                <div class="text-3xl font-bold">
+                    I know what I'm doing
+                </div>
+            </button> 
+        </div>
     </div>
 </template>
 

@@ -1,17 +1,18 @@
 <template>
     <component
         :is="modelViewer" 
-        class="w-full h-2/5 absolute top-0"
+        class="w-full h-1/2"
         shadow-intensity="0.1" 
         shadow-softness="1" 
-        model-is-visible="false"
         camera-controls 
+        disable-zoom
+        disable-pan
         auto-rotate="true"
     />
 </template>
 
 <script setup lang="ts">
-    import { h, } from 'vue';
+    import { h } from 'vue';
     import('@google/model-viewer');
 
     const modelViewer = h('model-viewer', {

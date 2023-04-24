@@ -1,6 +1,6 @@
 <template>
-    <ConnectButton v-if="!result" class="flex justify-center items-center h-screen" @connected="setResult" />
-    <div v-else class="flex justify-center">
+    <ConnectButton v-if="!result" @connected="setResult" />
+    <div v-else>
         <button 
             class="transition duration-300 ease-in-out hover:scale-110 text-white py-4 px-10 rounded-full fixed right-4 top-4" 
             @click=" handle_disconnect()"
