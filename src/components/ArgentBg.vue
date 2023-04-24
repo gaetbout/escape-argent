@@ -1,7 +1,7 @@
 <template>
     <component
         :is="modelViewer" 
-        class="w-1/2 h-2/3 absolute -bottom-10 -right-10"
+        class="w-full h-2/5 absolute top-0"
         shadow-intensity="0.1" 
         shadow-softness="1" 
         model-is-visible="false"
