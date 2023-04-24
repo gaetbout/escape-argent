@@ -1,10 +1,6 @@
 <template>
-    <div class="flex justify-center">
-        <div class="flex-col justify-center items-center h-screen">
-            <ArgentBg />
-            <router-view />
-        </div>
-    </div>
+    <ArgentBg />
+    <router-view />
 </template>
 
 <script setup lang="ts">

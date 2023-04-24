@@ -14,7 +14,7 @@
                 <TimeLeft :deadline-date="timeleft" />
             </div>
         </div>
-        <div v-else>
+        <div v-else class="text-center">
             <h1 class="text-6xl font-bold ">You can complete the escape</h1>
             <h2 class="text-xl font-bold p-10 ">Be aware that you won't be able to recover this wallet if you get hacked or lose the the Private Key</h2>
             <br>

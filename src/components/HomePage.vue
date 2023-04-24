@@ -10,11 +10,11 @@
             </div>
         </button>
         <!-- TODO Review if else logic and split into components -->
-        <div v-if="current_guardian">
+        <div v-if="current_guardian"> 
             <EscapeOngoing v-if="escape" :escape="escape" :result="result" />
             <TriggerEscape v-else :result="result" :guardian="current_guardian" />
         </div>
-        <h1 v-else class="text-6xl font-bold p-10 ">You are already freed from Argent</h1>
+        <h1 v-else class="text-center text-6xl font-bold p-10 ">You are already freed from Argent</h1>
     </div>
 </template>
 
