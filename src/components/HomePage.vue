@@ -14,11 +14,7 @@
             <EscapeOngoing v-if="escape" :escape="escape" :result="result" />
             <TriggerEscape v-else :result="result" :guardian="current_guardian" />
         </div>
-        <div v-else class="flex justify-center items-center h-screen">
-            <div class="text-center">
-                <h1 class="text-6xl font-bold p-10 ">You are already freed from Argent</h1>
-            </div>
-        </div>
+        <h1 v-else class="text-6xl font-bold p-10 ">You are already freed from Argent</h1>
     </div>
 </template>
 
