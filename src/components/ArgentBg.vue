@@ -1,7 +1,7 @@
 <template>
     <component
         :is="modelViewer" 
-        class="w-full h-1/2"
+        class="w-full h-2/5 pt-10"
         shadow-intensity="0.1" 
         shadow-softness="1" 
         camera-controls 
