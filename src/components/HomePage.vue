@@ -35,12 +35,12 @@
     // TODO Pq tu passse pas ça en dessous plutot que tout refaire?
     async function get_escape(){
         let res = await connectedStarknet.value.provider.callContract({contractAddress: connectedStarknet.value.selectedAddress, entrypoint:"getEscape"});
-        escape.value = res.connectedStarknet;
+        escape.value = res.result;
     }
 
     async function get_guardian(){
         const res = await connectedStarknet.value.provider.callContract({contractAddress: connectedStarknet.value.selectedAddress, entrypoint:"getGuardian"});
-        current_guardian.value = res.connectedStarknet[0];
+        current_guardian.value = res.result[0];
     }
 
 </script>
