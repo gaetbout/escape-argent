@@ -35,6 +35,8 @@
     import TimeLeft from '@/components/TimeLeft.vue';
     import sn from 'get-starknet-core'
     
+    const emits = defineEmits(['freed']);
+
     const props = defineProps({
         escape: {
             type: Object,
@@ -66,7 +68,7 @@
             entrypoint: 'escapeGuardian',
             calldata:[0],
         })
-            .then((something:string) => console.log(something))
+            .then(() => emits('freed'))
             .catch(async (e:string) => {
                 const argent = (await sn.getAvailableWallets()).find(wallet => wallet.id === "argentX");
                 sn.enable(argent).then( acc => props.result = acc);

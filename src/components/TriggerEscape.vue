@@ -20,6 +20,8 @@
 <script setup lang="ts">
     import sn from 'get-starknet-core';
 
+    const emits = defineEmits(['escaped']);
+
     const props = defineProps({
         result: {
             type: Object,
@@ -33,15 +35,13 @@
 
     
     async function handle_trigger_escape() {
+        // TODO Do loading animation
         await props.result.enable();
         props.result.account.execute({
             contractAddress: props.result.selectedAddress,
             entrypoint: 'triggerEscapeGuardian'
         })
-            .then((something:string) => {
-                // TODO Signal parent start timer
-                console.log(something)
-            })
+            .then(() => emits('escaped'))
             .catch(async (e:string) => {
                 const argent = (await sn.getAvailableWallets()).find(wallet => wallet.id === "argentX");
                 sn.enable(argent).then( acc => props.result = acc);
