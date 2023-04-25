@@ -23,7 +23,7 @@
     const emits = defineEmits(['escaped']);
 
     const props = defineProps({
-        result: {
+        connectedStarknet: {
             type: Object,
             required:true,
         },
@@ -36,15 +36,15 @@
     
     async function handle_trigger_escape() {
         // TODO Do loading animation
-        await props.result.enable();
-        props.result.account.execute({
-            contractAddress: props.result.selectedAddress,
+        await props.connectedStarknet.enable();
+        props.connectedStarknet.account.execute({
+            contractAddress: props.connectedStarknet.selectedAddress,
             entrypoint: 'triggerEscapeGuardian'
         })
             .then(() => emits('escaped'))
             .catch(async (e:string) => {
                 const argent = (await sn.getAvailableWallets()).find(wallet => wallet.id === "argentX");
-                sn.enable(argent).then( acc => props.result = acc);
+                sn.enable(argent).then( acc => props.connectedStarknet = acc);
             });
         // TODO Should trigger animation
     }

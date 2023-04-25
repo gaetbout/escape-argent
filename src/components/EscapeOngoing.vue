@@ -42,7 +42,7 @@
             type: Object,
             required:true,
         },
-        result: {
+        connectedStarknet: {
             type: Object,
             required:true,
         },
@@ -62,16 +62,16 @@
     
     async function handle_remove_guardian() {
         // TODO ask for confirmation and say it is very risky
-        await props.result.enable();
-        await props.result.account.execute({
-            contractAddress: props.result.selectedAddress,
+        await props.connectedStarknet.enable();
+        await props.connectedStarknet.account.execute({
+            contractAddress: props.connectedStarknet.selectedAddress,
             entrypoint: 'escapeGuardian',
             calldata:[0],
         })
             .then(() => emits('freed'))
             .catch(async (e:string) => {
                 const argent = (await sn.getAvailableWallets()).find(wallet => wallet.id === "argentX");
-                sn.enable(argent).then( acc => props.result = acc);
+                sn.enable(argent).then( acc => props.connectedStarknet = acc);
             });   
     }
 </script>

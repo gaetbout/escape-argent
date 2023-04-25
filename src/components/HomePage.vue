@@ -1,62 +1,48 @@
 <template>
-    <ConnectButton v-if="!result" @connected="setResult" />
+    <ConnectButton @connected="setConnectedStarknet" @disconnected="resetConnectedStarknet" />
+    <div v-if="current_guardian"> 
+        <EscapeOngoing v-if="escape" :escape="escape" :connected-starknet="connectedStarknet" @freed="current_guardian = null" />
+        <TriggerEscape v-else :connected-starknet="connectedStarknet" :guardian="current_guardian" @escaped="get_escape" />
+    </div>
     <div v-else>
-        <button 
-            class="transition duration-300 ease-in-out hover:scale-110 text-white py-4 px-10 rounded-full fixed right-4 top-4" 
-            @click=" handle_disconnect()"
-        >
-            <div class="text-xl font-bold">
-                Connected with {{ get_short_address(result.selectedAddress) }}
-            </div>
-        </button>
-        <!-- TODO Review if else logic and split into components -->
-        <div v-if="current_guardian"> 
-            <EscapeOngoing v-if="escape" :escape="escape" :result="result" @freed="current_guardian = null" />
-            <TriggerEscape v-else :result="result" :guardian="current_guardian" @escaped="get_escape" />
-        </div>
-        <h1 v-else class="text-center text-6xl font-bold p-10 ">You are free from Argent</h1>
+        <h1 v-if="connectedStarknet" class="text-center text-6xl font-bold p-10">You are free from Argent</h1>
     </div>
 </template>
 
 <script setup lang="ts">
     import { ref } from 'vue'
-    import sn from 'get-starknet-core'
     import { ConnectedStarknetWindowObject } from 'get-starknet-core';
     // TODO Clean components path?
     import ConnectButton from '@/components/ConnectButton.vue';
     import EscapeOngoing from '@/components/EscapeOngoing.vue';
     import TriggerEscape from '@/components/TriggerEscape.vue';
 
-    let result = ref(null);
+    let connectedStarknet = ref(null);
     let current_guardian = ref(null);
     let escape = ref(null);
 
 
-    function setResult(data: ConnectedStarknetWindowObject) {
-        result.value = data;
+    function setConnectedStarknet(data: ConnectedStarknetWindowObject) {
+        connectedStarknet.value = data;
         get_guardian();
         get_escape();
     }
 
-    async function handle_disconnect() {
-        sn.disconnect();
-        result.value = null;
+    async function resetConnectedStarknet() {
+        connectedStarknet.value = null;
     }
 
     // TODO Pq tu passse pas ça en dessous plutot que tout refaire?
     async function get_escape(){
-        let res = await result.value.provider.callContract({contractAddress: result.value.selectedAddress, entrypoint:"getEscape"});
-        escape.value = res.result;
+        let res = await connectedStarknet.value.provider.callContract({contractAddress: connectedStarknet.value.selectedAddress, entrypoint:"getEscape"});
+        escape.value = res.connectedStarknet;
     }
 
     async function get_guardian(){
-        const res = await result.value.provider.callContract({contractAddress: result.value.selectedAddress, entrypoint:"getGuardian"});
-        current_guardian.value = res.result[0];
+        const res = await connectedStarknet.value.provider.callContract({contractAddress: connectedStarknet.value.selectedAddress, entrypoint:"getGuardian"});
+        current_guardian.value = res.connectedStarknet[0];
     }
 
-    function get_short_address(address: string) {
-        return address.slice(0, 5) + "..." + address.slice(-4)
-    }
 </script>
 
 <style>
