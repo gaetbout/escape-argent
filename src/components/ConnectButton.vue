@@ -8,7 +8,7 @@
             <h1 class="text-7xl p-5 pt-0 font-bold">Escape Argent</h1>
             <button 
                 class="transition duration-300 ease-in-out hover:scale-110 text-white m-4 py-4 p-10 rounded-full" 
-                @click=" handle_connect()"
+                @click=" handleConnect()"
             >
                 <div class="text-3xl font-bold">
                     Connect wallet 
@@ -19,7 +19,7 @@
         <div v-else>
             <button 
                 class="transition duration-300 ease-in-out hover:scale-110 text-white py-4 px-10 rounded-full fixed right-5 top-5" 
-                @click=" handle_disconnect()"
+                @click=" handleDisconnect()"
             >
                 <div class="text-xl font-bold">
                     Connected with {{ shortAddress }}
@@ -45,7 +45,7 @@
     const connectedWallet = connectedWalletStore();
     checkHasArgentWallet();
 
-    async function handle_disconnect() {
+    async function handleDisconnect() {
         sn.disconnect();
         connectedWallet.connectedWallet = null;
     }
@@ -54,7 +54,7 @@
         argent.value = (await sn.getAvailableWallets()).find(wallet => wallet.id === "argentX"  );
     }
 
-    async function handle_connect() {
+    async function handleConnect() {
         sn.enable(argent.value).then( acc => {
             connectedWallet.connectedWallet = acc;
         }).catch(() => {

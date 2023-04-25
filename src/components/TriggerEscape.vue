@@ -6,7 +6,7 @@
                 <h2 class="text-5xl font-bold p-5">Current guardian: {{ guardian }}</h2>
                 <button 
                     class="transition duration-300 ease-in-out hover:scale-110 text-white m-1 py-4 px-10 rounded-full" 
-                    @click=" handle_trigger_escape()"
+                    @click=" handleTriggerEscape()"
                 >
                     <div class="text-xl font-bold">
                         Escape wallet
@@ -24,8 +24,7 @@
     const connectedWallet = connectedWalletStore();
     const emits = defineEmits(['escaped']);
 
-    // TODO _ TO CAMEL
-    async function handle_trigger_escape() {
+    async function handleTriggerEscape() {
         const account = connectedWallet.connectedWallet;
         // TODO Do loading animation
         if (account) {

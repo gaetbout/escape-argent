@@ -20,7 +20,7 @@
             <br>
             <button 
                 class="transition duration-300 ease-in-out hover:scale-110 text-white mb-4 py-4 px-10 rounded-full" 
-                @click="handle_remove_guardian()"
+                @click="handleRemoveGuardian()"
             >
                 <div class="text-3xl font-bold">
                     I know what I'm doing
@@ -58,7 +58,7 @@
         }
     }
     
-    async function handle_remove_guardian() {
+    async function handleRemoveGuardian() {
         // TODO ask for confirmation and say it is very risky
         const account = connectedWallet.connectedWallet;
         if (account) {
