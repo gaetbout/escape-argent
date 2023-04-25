@@ -38,7 +38,7 @@
 <script setup lang="ts">
     import { ref } from 'vue'
     import sn from 'get-starknet-core'
-    import ArgentLogo from '@/components/ArgentLogo.vue';
+    import ArgentLogo from '@/components/simple/ArgentLogo.vue';
 
     const emits = defineEmits(['connected', 'disconnected']);
     let argent = ref(null);

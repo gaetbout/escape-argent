@@ -4,7 +4,7 @@
 </template>
 
 <script setup lang="ts">
-import ArgentBg from '@/components/ArgentBg.vue';
+import ArgentBg from '@/components/simple/ArgentBg.vue';
 </script>
 
 

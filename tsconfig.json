@@ -13,8 +13,9 @@
         "lib": ["esnext", "dom"],
         "skipLibCheck": true,
         "types": ["vite/client", "vitest/globals", "vite-svg-loader"],
+        "baseUrl": ".",
         "paths": {
-            "@/*": ["./src/*"]
+            "@/*": ["./src/*"],
         }
     },
     "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],

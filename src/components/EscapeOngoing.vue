@@ -32,7 +32,7 @@
 
 <script setup lang="ts">
     import { ref } from 'vue'
-    import TimeLeft from '@/components/TimeLeft.vue';
+    import TimeLeft from '@/components/simple/TimeLeft.vue';
     import sn from 'get-starknet-core'
     
     const emits = defineEmits(['freed']);
