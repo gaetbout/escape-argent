@@ -34,15 +34,13 @@
     import { ref } from 'vue'
     import TimeLeft from '@/components/simple/TimeLeft.vue';
     import sn from 'get-starknet-core'
+    import { connectedWalletStore } from '@/stores/account';
     
     const emits = defineEmits(['freed']);
+    const connectedWallet = connectedWalletStore();
 
     const props = defineProps({
         escape: {
-            type: Object,
-            required:true,
-        },
-        connectedStarknet: {
             type: Object,
             required:true,
         },
@@ -62,17 +60,20 @@
     
     async function handle_remove_guardian() {
         // TODO ask for confirmation and say it is very risky
-        await props.connectedStarknet.enable();
-        await props.connectedStarknet.account.execute({
-            contractAddress: props.connectedStarknet.selectedAddress,
-            entrypoint: 'escapeGuardian',
-            calldata:[0],
-        })
-            .then(() => emits('freed'))
-            .catch(async (e:string) => {
-                const argent = (await sn.getAvailableWallets()).find(wallet => wallet.id === "argentX");
-                sn.enable(argent).then( acc => props.connectedStarknet = acc);
-            });   
+        const account = connectedWallet.connectedWallet;
+        if (account) {
+            await account.enable();
+            await account.account.execute({
+                contractAddress: account.selectedAddress,
+                entrypoint: 'escapeGuardian',
+                calldata:[0],
+            })
+                .then(() => emits('freed'))
+                .catch(async (e:string) => {
+                    const argent = (await sn.getAvailableWallets()).find(wallet => wallet.id === "argentX");
+                    sn.enable(argent).then( acc => connectedWallet.connectedWallet = acc);
+                });   
+        }
     }
 </script>
 

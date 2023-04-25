@@ -1,17 +1,17 @@
-<template>
+<template> 
     <div class="text-center">
         <div v-if="!argent">
             <h1 class="text-6xl font-bold p-5">No ArgentX wallet detected</h1>
-            <h2 class="text-2xl font-bold">(But you can play with the logo)</h2>
+            <h2 class="text-2xl font-bold">(You can play with the logo)</h2>
         </div>
-        <div v-else-if="!getLama()">
+        <div v-else-if="!connectedWallet.connectedWallet">
             <h1 class="text-7xl p-5 pt-0 font-bold">Escape Argent</h1>
             <button 
                 class="transition duration-300 ease-in-out hover:scale-110 text-white m-4 py-4 p-10 rounded-full" 
                 @click=" handle_connect()"
             >
                 <div class="text-3xl font-bold">
-                    Connect wallet  {{ getLama() }}
+                    Connect wallet 
                     <ArgentLogo width="36" height="40" fill="#FFFFFF" />
                 </div>
             </button>
@@ -37,18 +37,17 @@
 
 <script setup lang="ts">
     import { ref, computed } from 'vue'
-    import { useStore } from 'vuex'
+    import { connectedWalletStore } from '@/stores/account'
     import sn from 'get-starknet-core'
     import ArgentLogo from '@/components/simple/ArgentLogo.vue';
 
     const argent = ref(null);
-    const store = useStore();
+    const connectedWallet = connectedWalletStore();
     checkHasArgentWallet();
-    
 
     async function handle_disconnect() {
         sn.disconnect();
-        store.dispatch('setConnectedAccount', null)
+        connectedWallet.connectedWallet = null;
     }
 
     async function checkHasArgentWallet() {
@@ -57,15 +56,18 @@
 
     async function handle_connect() {
         sn.enable(argent.value).then( acc => {
-            store.dispatch('setConnectedAccount', acc)
+            connectedWallet.connectedWallet = acc;
         }).catch(() => {
             // Ignore
         });
     }
 
     const shortAddress = computed(() => {
-        const address = store.getters.getConnectedAccount.selectedAddress;
-        return address.slice(0, 5) + "..." + address.slice(-4);
+        if (connectedWallet.connectedWallet) {
+            const address = connectedWallet.connectedWallet.selectedAddress;
+            return address.slice(0, 5) + "..." + address.slice(-4);
+        }
+        return "";
     });
     
 </script>

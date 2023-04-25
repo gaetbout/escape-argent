@@ -19,34 +19,27 @@
 
 <script setup lang="ts">
     import sn from 'get-starknet-core';
-
+    import { connectedWalletStore } from '@/stores/account';
+    
+    const connectedWallet = connectedWalletStore();
     const emits = defineEmits(['escaped']);
 
-    const props = defineProps({
-        connectedStarknet: {
-            type: Object,
-            required:true,
-        },
-        guardian: {
-            type: String,
-            required:true,
-        },
-    });
-
-    
+    // TODO _ TO CAMEL
     async function handle_trigger_escape() {
+        const account = connectedWallet.connectedWallet;
         // TODO Do loading animation
-        await props.connectedStarknet.enable();
-        props.connectedStarknet.account.execute({
-            contractAddress: props.connectedStarknet.selectedAddress,
-            entrypoint: 'triggerEscapeGuardian'
-        })
-            .then(() => emits('escaped'))
-            .catch(async (e:string) => {
-                const argent = (await sn.getAvailableWallets()).find(wallet => wallet.id === "argentX");
-                sn.enable(argent).then( acc => props.connectedStarknet = acc);
-            });
-        // TODO Should trigger animation
+        if (account) {
+            await account.enable();
+            account.account.execute({
+                contractAddress: account.selectedAddress,
+                entrypoint: 'triggerEscapeGuardian'
+            })
+                .then(() => emits('escaped'))
+                .catch(async (e:string) => {
+                    const argent = (await sn.getAvailableWallets()).find(wallet => wallet.id === "argentX");
+                    sn.enable(argent).then( acc => connectedWallet.connectedWallet = acc );
+                });
+        }
     }
 
 </script>

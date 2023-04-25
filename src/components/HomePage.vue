@@ -1,36 +1,34 @@
 <template>
     <ConnectButton />
     <div v-if="current_guardian"> 
-        <EscapeOngoing v-if="escape" :escape="escape" :connected-starknet="connectedStarknet" @freed="current_guardian = null" />
-        <TriggerEscape v-else :connected-starknet="connectedStarknet" :guardian="current_guardian" @escaped="get_escape" />
+        <EscapeOngoing v-if="escape" :escape="escape" @freed="current_guardian = null" />
+        <TriggerEscape v-else :guardian="current_guardian" @escaped="get_escape" />
     </div>
     <div v-else>
-        <h1 v-if="connectedStarknet" class="text-center text-6xl font-bold p-10">You are free from Argent</h1>
+        <h1 v-if="connectedWallet.connectedWallet" class="text-center text-6xl font-bold p-10">You are free from Argent</h1>
     </div>
 </template>
 
 <script setup lang="ts">
-    import { ref, computed } from 'vue'
-    import { useStore } from 'vuex'
-    import { ConnectedStarknetWindowObject } from 'get-starknet-core';
+    import { ref,  } from 'vue'
     // TODO Clean components path?
+    import { connectedWalletStore } from '@/stores/account'
     import ConnectButton from '@/components/ConnectButton.vue';
     import EscapeOngoing from '@/components/EscapeOngoing.vue';
     import TriggerEscape from '@/components/TriggerEscape.vue';
 
-    const store = useStore();
+    const connectedWallet = connectedWalletStore();
     const current_guardian = ref(null);
     const escape = ref(null);
 
-    // TODO update ici it iss now using store
-    function setConnectedStarknet(data: ConnectedStarknetWindowObject) {
-        connectedStarknet.value = data;
+    
+    connectedWallet.$subscribe(() => {
         get_guardian();
         get_escape();
-    }
+    });
 
     function getConnectedAccount() {
-        return store.getters.getConnectedAccount;
+        return connectedWallet.connectedWallet;
     }
     // TODO Pq tu passse pas ça en dessous plutot que tout refaire?
     async function get_escape(){
