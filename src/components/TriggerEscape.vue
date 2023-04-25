@@ -23,6 +23,7 @@
     
     const connectedWallet = connectedWalletStore();
     const emits = defineEmits(['escaped']);
+    // TODO Re-instate current guardan
 
     async function handleTriggerEscape() {
         const account = connectedWallet.connectedWallet;
