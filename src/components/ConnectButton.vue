@@ -4,14 +4,14 @@
             <h1 class="text-6xl font-bold p-5">No ArgentX wallet detected</h1>
             <h2 class="text-2xl font-bold">(But you can play with the logo)</h2>
         </div>
-        <div v-else-if="!connectedStarknet">
+        <div v-else-if="!getLama()">
             <h1 class="text-7xl p-5 pt-0 font-bold">Escape Argent</h1>
             <button 
                 class="transition duration-300 ease-in-out hover:scale-110 text-white m-4 py-4 p-10 rounded-full" 
                 @click=" handle_connect()"
             >
                 <div class="text-3xl font-bold">
-                    Connect wallet 
+                    Connect wallet  {{ getLama() }}
                     <ArgentLogo width="36" height="40" fill="#FFFFFF" />
                 </div>
             </button>
@@ -22,7 +22,7 @@
                 @click=" handle_disconnect()"
             >
                 <div class="text-xl font-bold">
-                    Connected with {{ get_short_address(connectedStarknet.selectedAddress) }}
+                    Connected with {{ shortAddress }}
                 </div>
             </button>
         </div>
@@ -36,38 +36,36 @@
 </script>
 
 <script setup lang="ts">
-    import { ref } from 'vue'
+    import { ref, computed } from 'vue'
+    import { useStore } from 'vuex'
     import sn from 'get-starknet-core'
     import ArgentLogo from '@/components/simple/ArgentLogo.vue';
 
-    const emits = defineEmits(['connected', 'disconnected']);
-    let argent = ref(null);
-    let connectedStarknet = ref(null);
-
-    
+    const argent = ref(null);
+    const store = useStore();
     checkHasArgentWallet();
-
+    
 
     async function handle_disconnect() {
         sn.disconnect();
-        connectedStarknet.value = null;
-        emits('disconnected');
+        store.dispatch('setConnectedAccount', null)
     }
 
     async function checkHasArgentWallet() {
         argent.value = (await sn.getAvailableWallets()).find(wallet => wallet.id === "argentX"  );
     }
-    
+
     async function handle_connect() {
         sn.enable(argent.value).then( acc => {
-            connectedStarknet.value = acc;
-            emits('connected', acc)
+            store.dispatch('setConnectedAccount', acc)
         }).catch(() => {
             // Ignore
         });
     }
 
-    function get_short_address(address: string) {
-        return address.slice(0, 5) + "..." + address.slice(-4)
-    }
+    const shortAddress = computed(() => {
+        const address = store.getters.getConnectedAccount.selectedAddress;
+        return address.slice(0, 5) + "..." + address.slice(-4);
+    });
+    
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <ConnectButton @connected="setConnectedStarknet" @disconnected="resetConnectedStarknet" />
+    <ConnectButton />
     <div v-if="current_guardian"> 
         <EscapeOngoing v-if="escape" :escape="escape" :connected-starknet="connectedStarknet" @freed="current_guardian = null" />
         <TriggerEscape v-else :connected-starknet="connectedStarknet" :guardian="current_guardian" @escaped="get_escape" />
@@ -10,36 +10,38 @@
 </template>
 
 <script setup lang="ts">
-    import { ref } from 'vue'
+    import { ref, computed } from 'vue'
+    import { useStore } from 'vuex'
     import { ConnectedStarknetWindowObject } from 'get-starknet-core';
     // TODO Clean components path?
     import ConnectButton from '@/components/ConnectButton.vue';
     import EscapeOngoing from '@/components/EscapeOngoing.vue';
     import TriggerEscape from '@/components/TriggerEscape.vue';
 
-    let connectedStarknet = ref(null);
-    let current_guardian = ref(null);
-    let escape = ref(null);
+    const store = useStore();
+    const current_guardian = ref(null);
+    const escape = ref(null);
 
-
+    // TODO update ici it iss now using store
     function setConnectedStarknet(data: ConnectedStarknetWindowObject) {
         connectedStarknet.value = data;
         get_guardian();
         get_escape();
     }
 
-    async function resetConnectedStarknet() {
-        connectedStarknet.value = null;
+    function getConnectedAccount() {
+        return store.getters.getConnectedAccount;
     }
-
     // TODO Pq tu passse pas ça en dessous plutot que tout refaire?
     async function get_escape(){
-        let res = await connectedStarknet.value.provider.callContract({contractAddress: connectedStarknet.value.selectedAddress, entrypoint:"getEscape"});
+        let account = getConnectedAccount();
+        let res = await account.provider.callContract({contractAddress: account.selectedAddress, entrypoint:"getEscape"});
         escape.value = res.result;
     }
 
     async function get_guardian(){
-        const res = await connectedStarknet.value.provider.callContract({contractAddress: connectedStarknet.value.selectedAddress, entrypoint:"getGuardian"});
+        let account = getConnectedAccount();
+        const res = await account.provider.callContract({contractAddress: account.selectedAddress, entrypoint:"getGuardian"});
         current_guardian.value = res.result[0];
     }
 
